@@ -1,0 +1,17 @@
+{
+  "name": "3pl-system",
+  "version": "1.0.0",
+  "description": "Sistema 3PL para ecommerce",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "body-parser": "^1.19.0",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.7.1",
+    "prisma": "^5.0.0"
+  }
+}

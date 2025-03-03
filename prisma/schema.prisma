@@ -1,0 +1,33 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  role     String  // admin o cliente
+}
+
+model Producto {
+  id         Int     @id @default(autoincrement())
+  sku        String  @unique
+  name       String
+  price      Float
+  stock      Int
+  dimensions String
+  weight     Float
+}
+
+model Pedido {
+  id            Int     @id @default(autoincrement())
+  orderId       String  @unique
+  productSku    String
+  quantity      Int
+  totalPrice    Float
+  customerName  String
+  shippingAddress String
+  status        String // Pendiente, Enviado, Cancelado
+}
