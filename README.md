@@ -1,46 +1,42 @@
-# Sistema 3PL para Ecommerce 🚀
+# PIM Ligero para Listings Multi‑Marketplace (México)
 
-Este es un sistema diseñado para gestionar pedidos, inventarios y logística 3PL en múltiples marketplaces.
+Implementación base de un sistema interno para creación de listings (1 usuario) con foco en variantes por SKU+EAN y exportación por marketplace.
 
-## 📌 Funcionalidades Principales:
-- Gestión de inventarios y productos.
-- Conexión con Amazon, Mercado Libre, Shopify, Liverpool y Claro Shop.
-- Generación de guías de envío y monitoreo de pedidos.
-- Personalización de costos de almacenaje y picking.
+## Incluye
+- Arquitectura y diseño técnico base (`docs/arquitectura-pim.md`).
+- Modelo de datos completo en Prisma (`prisma/schema.prisma`).
+- Configuración de mapeos por marketplace (`config/marketplace-mappings.json`).
+- API para:
+  - Catálogo maestro y filtros.
+  - Validación de importaciones Excel.
+  - Normalización por catálogo.
+  - QA y reporte `Reporte_QA.xlsx`.
+  - Exportación por marketplace a `.xlsx` y `.zip`.
+  - Pipeline de imágenes con `sharp`.
 
-## 🔧 Instalación y Configuración:
-1. Clonar el repositorio:
+## Requisitos
+```bash
+npm install
+```
 
-   ```bash
-   git clone https://github.com/trepmx/3pl.git
-   cd 3pl
-   ```
+## Variables de entorno
+```dotenv
+DATABASE_URL="postgresql://usuario:password@localhost:5432/pim"
+PORT=5000
+```
 
-2. Instalar dependencias:
+## Ejecutar
+```bash
+npm run dev
+```
 
-   ```bash
-   npm install
-   ```
+## Estructura relevante
+- `server.js`: API principal.
+- `prisma/schema.prisma`: modelo relacional.
+- `config/marketplace-mappings.json`: reglas de transformación.
+- `data/catalogs.json`: normalización de atributos.
+- `docs/arquitectura-pim.md`: arquitectura y flujo.
 
-3. Configurar la base de datos en el archivo .env:
-
-   ```plaintext
-   DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/3pl_db"
-   JWT_SECRET="clave_secreta_segura"
-   PORT=5000
-   ```
-
-4. Crear las tablas con Prisma:
-
-   ```bash
-   npx prisma migrate dev --name init
-   ```
-
-5. Iniciar el servidor:
-
-   ```bash
-   npm run dev
-   ```
-
-## 📞 Soporte
-Para cualquier duda, contáctanos. 
+## Notas
+- Esta versión usa archivos JSON locales para ejecución rápida del flujo sin migraciones.
+- El modelo Prisma está listo para migrar a PostgreSQL en una siguiente etapa.
