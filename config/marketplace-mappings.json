@@ -1,0 +1,39 @@
+{
+  "amazon": {
+    "sheet": "Template",
+    "columns": ["seller_sku", "ean", "item_name", "brand_name", "color_name", "department_name", "product_description"],
+    "rules": {
+      "seller_sku": { "source": "sku", "required": true },
+      "ean": { "source": "ean", "required": true },
+      "item_name": {
+        "transform": "concat",
+        "fields": ["brand", "model", "frameColor", "gender"],
+        "maxLength": 120,
+        "required": true
+      },
+      "color_name": {
+        "source": "frameColor",
+        "transform": "catalogLookup",
+        "catalog": "frameColor"
+      }
+    }
+  },
+  "liverpool": {
+    "sheet": "Catalogo",
+    "columns": ["SKU", "EAN", "NOMBRE", "MARCA", "COLOR", "GENERO", "DESCRIPCION"],
+    "rules": {
+      "SKU": { "source": "sku", "required": true, "transform": "uppercase" },
+      "EAN": { "source": "ean", "required": true },
+      "NOMBRE": {
+        "transform": "concat",
+        "fields": ["brand", "model", "frameColor"],
+        "maxLength": 100
+      },
+      "COLOR": {
+        "source": "frameColor",
+        "transform": "catalogLookup",
+        "catalog": "frameColor"
+      }
+    }
+  }
+}

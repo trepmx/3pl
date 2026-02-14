@@ -1,0 +1,33 @@
+{
+  "frameColor": [
+    {
+      "master": "Borgoña",
+      "liverpool": "ROJO 001",
+      "amazon": "Red",
+      "mercado_libre": "Rojo",
+      "coppel": "Rojo",
+      "elektra": "Rojo",
+      "tiktok": "Red"
+    },
+    {
+      "master": "Negro",
+      "liverpool": "NEGRO 002",
+      "amazon": "Black",
+      "mercado_libre": "Negro",
+      "coppel": "Negro",
+      "elektra": "Negro",
+      "tiktok": "Black"
+    }
+  ],
+  "lensColor": [
+    {
+      "master": "Transparente",
+      "liverpool": "CRISTAL 010",
+      "amazon": "Clear",
+      "mercado_libre": "Transparente",
+      "coppel": "Transparente",
+      "elektra": "Transparente",
+      "tiktok": "Clear"
+    }
+  ]
+}

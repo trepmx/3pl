@@ -1,33 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id       Int     @id @default(autoincrement())
-  name     String
-  email    String  @unique
-  password String
-  role     String  // admin o cliente
+enum Marketplace {
+  amazon
+  mercado_libre
+  liverpool
+  coppel
+  elektra
+  tiktok
 }
 
-model Producto {
-  id         Int     @id @default(autoincrement())
-  sku        String  @unique
-  name       String
-  price      Float
-  stock      Int
-  dimensions String
-  weight     Float
+enum IssueType {
+  error
+  warning
 }
 
-model Pedido {
-  id            Int     @id @default(autoincrement())
-  orderId       String  @unique
-  productSku    String
-  quantity      Int
-  totalPrice    Float
-  customerName  String
-  shippingAddress String
-  status        String // Pendiente, Enviado, Cancelado
+enum ListingStatus {
+  ok
+  warning
+  error
+  pending
+}
+
+model ProductVariant {
+  id                Int                 @id @default(autoincrement())
+  sku               String
+  ean               String              @unique
+  brand             String
+  model             String
+  category          String
+  subcategory       String?
+  frameColor        String?
+  lensColor         String?
+  frameMaterial     String?
+  shape             String?
+  lensType          String?
+  polarized         Boolean             @default(false)
+  uvProtection      Boolean             @default(false)
+  measurementsMm    String?
+  gender            String?
+  description       String?
+  baseTitle         String?
+  catalogedAt       DateTime
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  mainImage         String?
+  mainImageWhiteBg  Boolean             @default(false)
+  images            ProductImage[]
+  statuses          MarketplaceStatus[]
+  qaIssues          QaIssue[]
+
+  @@unique([sku, ean])
+  @@index([brand, category])
+  @@index([catalogedAt])
+}
+
+model ProductImage {
+  id              Int            @id @default(autoincrement())
+  productVariant  ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  productVariantId Int
+  isMain          Boolean        @default(false)
+  originalPath    String
+  orderIndex      Int            @default(0)
+  createdAt       DateTime       @default(now())
+  renditions      ImageRendition[]
+
+  @@index([productVariantId, isMain])
+}
+
+model ImageRendition {
+  id          Int          @id @default(autoincrement())
+  image       ProductImage @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId     Int
+  marketplace Marketplace
+  filePath    String
+  width       Int
+  height      Int
+  dpi         Int?
+  fitMode     String
+  createdAt   DateTime     @default(now())
+
+  @@unique([imageId, marketplace])
+}
+
+model MarketplaceStatus {
+  id              Int            @id @default(autoincrement())
+  productVariant  ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  productVariantId Int
+  marketplace     Marketplace
+  status          ListingStatus
+  lastValidatedAt DateTime?
+
+  @@unique([productVariantId, marketplace])
+}
+
+model QaIssue {
+  id               Int            @id @default(autoincrement())
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  productVariantId Int
+  marketplace      Marketplace?
+  field            String
+  type             IssueType
+  description      String
+  createdAt        DateTime       @default(now())
+
+  @@index([type, marketplace])
+}
+
+model CatalogValue {
+  id          Int    @id @default(autoincrement())
+  attribute   String
+  masterValue String
+  amazon      String?
+  mercadoLibre String?
+  liverpool   String?
+  coppel      String?
+  elektra     String?
+  tiktok      String?
+
+  @@unique([attribute, masterValue])
+}
+
+model ImportHistory {
+  id          Int      @id @default(autoincrement())
+  fileName    String
+  rowCount    Int
+  errorCount  Int
+  mappingName String?
+  importedAt  DateTime @default(now())
+}
+
+model ProductChangeLog {
+  id               Int      @id @default(autoincrement())
+  productVariantId Int
+  sku              String
+  ean              String
+  changes          Json
+  changedAt        DateTime @default(now())
 }
